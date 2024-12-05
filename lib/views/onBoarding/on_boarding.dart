@@ -94,7 +94,7 @@ class _OnBoardingState extends State<OnBoarding> {
             width: double.infinity,
             child: ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(Color(0xff2eaadf)),
+                backgroundColor: WidgetStateProperty.all(const Color(0xff2eaadf)),
                 shape: WidgetStateProperty.all(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -108,7 +108,7 @@ class _OnBoardingState extends State<OnBoarding> {
                     curve: Curves.easeIn,
                   );
                 } else {
-                  Navigator.pushReplacementNamed(context, '/usercheck');
+                  Navigator.pushReplacementNamed(context, '/signup');
                 }
               },
               child: Text(
