@@ -10,6 +10,8 @@ Widget getAddProfileContainer(String text, String imgPath,BuildContext context) 
         Navigator.pushNamed(context, '/connectWithGmail');
       } else if(text=='Use setup code to connect'){
         Navigator.pushNamed(context, '/setupCode');
+      } else {
+        Navigator.pushNamed(context, '/deviceConnected');
       }
     },
     child: Container(

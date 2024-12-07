@@ -62,10 +62,6 @@ class ParentScreen extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
-                      getAddProfileContainer('Connect with Gmail ID', 'assets/icons/gmail.png',context),
-                      const SizedBox(
-                        height: 10,
-                      ),
                       getAddProfileContainer('Use setup code to connect', 'assets/icons/setupCode.png',context),
                     ],
                   ),

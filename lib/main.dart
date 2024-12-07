@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_space/providers/countdown_provider.dart';
 import 'package:safe_space/views/add_profile_screens/gmail_id/gmail_id.dart';
-import 'package:safe_space/views/add_profile_screens/same_wifi_screen.dart';
+import 'package:safe_space/views/add_profile_screens/same_wifi/device_connected.dart';
+import 'package:safe_space/views/add_profile_screens/same_wifi/same_wifi_screen.dart';
 import 'package:safe_space/views/add_profile_screens/setup_code/setup_code.dart';
 import 'package:safe_space/views/auth/login.dart';
 import 'package:safe_space/views/auth/signup.dart';
@@ -12,8 +15,15 @@ import 'package:safe_space/views/parent/add_profile/parent_screen.dart';
 import 'package:safe_space/views/splash/splash.dart';
 
 
-void main() async {
-  runApp(const MyApp());
+void main() {
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CountdownProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -47,6 +57,8 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) => const GmailScreen());
           } else if (settings.name == '/setupCode') {
             return MaterialPageRoute(builder: (context) => const SetupCodeScreen());
+          } else if (settings.name == '/deviceConnected') {
+            return MaterialPageRoute(builder: (context) => const DeviceConnected());
           }
           return null;
         },
