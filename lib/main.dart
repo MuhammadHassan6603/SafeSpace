@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_space/providers/countdown_provider.dart';
-import 'package:safe_space/views/add_profile_screens/gmail_id/gmail_id.dart';
 import 'package:safe_space/views/add_profile_screens/same_wifi/device_connected.dart';
 import 'package:safe_space/views/add_profile_screens/same_wifi/same_wifi_screen.dart';
 import 'package:safe_space/views/add_profile_screens/setup_code/setup_code.dart';
@@ -53,8 +52,6 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) => const ChildScreen());
           } else if (settings.name == '/sameWifiScreen') {
             return MaterialPageRoute(builder: (context) => const SameWifiScreen());
-          } else if (settings.name == '/connectWithGmail') {
-            return MaterialPageRoute(builder: (context) => const GmailScreen());
           } else if (settings.name == '/setupCode') {
             return MaterialPageRoute(builder: (context) => const SetupCodeScreen());
           } else if (settings.name == '/deviceConnected') {

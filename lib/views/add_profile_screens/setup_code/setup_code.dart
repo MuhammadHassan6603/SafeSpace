@@ -16,6 +16,7 @@ class SetupCodeScreen extends StatefulWidget {
 class _SetupCodeScreenState extends State<SetupCodeScreen> {
   bool isLoading = false;
   bool isCodeVisible = false;
+  String? setupCode;
 
   String generateSetupCode() {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -88,7 +89,7 @@ class _SetupCodeScreenState extends State<SetupCodeScreen> {
                                     ),
                                     child: Center(
                                       child: Text(
-                                        generateSetupCode(),
+                                        setupCode ?? '',
                                         style: GoogleFonts.roboto(
                                           fontSize: 24,
                                           fontWeight: FontWeight.bold,
@@ -106,9 +107,46 @@ class _SetupCodeScreenState extends State<SetupCodeScreen> {
                                         countdownProvider.timeLeft % 60;
                                     return Text(
                                       'Time Left: ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
-                                      style: TextStyle(fontSize: 18),
+                                      style: const TextStyle(fontSize: 18),
                                     );
-                                  })
+                                  }),
+                                  const SizedBox(height: 10,),
+                                  Consumer<CountdownProvider>(
+                                    builder:
+                                        (context, countdownProvider, child) {
+                                      if (countdownProvider.isTimerFinished) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              setupCode = generateSetupCode();
+                                              Provider.of<CountdownProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .startCountdown();
+                                            });
+                                          },
+                                          child: Container(
+                                            width: getWidth(context) * 0.9,
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(8),
+                                              color: const Color(0xff2eaadf)
+                                            ),
+                                            alignment: Alignment.center,
+                                            child: const Text(
+                                              'Regenerate Code',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        return const SizedBox
+                                            .shrink();
+                                      }
+                                    },
+                                  ),
                                 ],
                               )
                             : isLoading
@@ -125,9 +163,11 @@ class _SetupCodeScreenState extends State<SetupCodeScreen> {
                                         setState(() {
                                           isLoading = false;
                                           isCodeVisible = true;
+                                          setupCode = generateSetupCode();
                                         });
-                                        Provider.of<CountdownProvider>(context, listen: false)
-                                                .startCountdown();
+                                        Provider.of<CountdownProvider>(context,
+                                                listen: false)
+                                            .startCountdown();
                                       });
                                     },
                                     style: ElevatedButton.styleFrom(

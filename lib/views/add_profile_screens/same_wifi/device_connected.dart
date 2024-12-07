@@ -2,9 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:safe_space/utilities/helper.dart';
 
-class DeviceConnected extends StatelessWidget {
+class DeviceConnected extends StatefulWidget {
   const DeviceConnected({super.key});
 
+  @override
+  State<DeviceConnected> createState() => _DeviceConnectedState();
+}
+
+class _DeviceConnectedState extends State<DeviceConnected> {
+  bool isLoading = true;
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,9 +51,26 @@ class DeviceConnected extends StatelessWidget {
             const SizedBox(
               height: 70,
             ),
-            IntrinsicHeight(
-              child: SizedBox(
-                width: getWidth(context),
+            isLoading ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Waiting for device to accept connection request',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.roboto(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),),
+                          const SizedBox(height: 20,),
+                const CircularProgressIndicator(
+                  color: Color(0xff2eaadf),
+                ),
+              ],
+            )
+          :
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: IntrinsicHeight(
                 child: Padding(
                   padding: const EdgeInsets.all(25.0),
                   child: Column(
@@ -253,7 +285,7 @@ class DeviceConnected extends StatelessWidget {
                       ),
                       Container(
                         height: 60,
-                        width: double.infinity,
+                        width: getWidth(context)*0.9,
                         decoration: BoxDecoration(
                           color: Colors.blue,
                           borderRadius: BorderRadius.circular(12),
