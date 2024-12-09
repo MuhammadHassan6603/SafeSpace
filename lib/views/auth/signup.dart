@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_space/utilities/helper.dart';
 import 'package:safe_space/view_models/auth/auth_provider.dart';
+import 'package:safe_space/view_models/google_auth/google_auth.dart';
 import 'package:safe_space/widgets/google_button.dart';
 
 class SignupPage extends StatefulWidget {
@@ -20,6 +21,7 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+
     final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
         backgroundColor: Colors.white,
@@ -215,7 +217,7 @@ class _SignupPageState extends State<SignupPage> {
                               // SizedBox(width: 5,),
                               TextButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(context, '/login');
+                                    Navigator.pop(context);
                                   },
                                   child: Text(
                                     'Login',

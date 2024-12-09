@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:safe_space/utilities/helper.dart';
+import 'package:safe_space/views/auth/login.dart';
 import 'package:safe_space/views/onBoarding/content_model.dart';
 
 class OnBoarding extends StatefulWidget {
@@ -108,7 +109,7 @@ class _OnBoardingState extends State<OnBoarding> {
                     curve: Curves.easeIn,
                   );
                 } else {
-                  Navigator.pushReplacementNamed(context, '/signup');
+                  Navigator.pushReplacementNamed(context, '/login');
                   
                   // Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
                 }

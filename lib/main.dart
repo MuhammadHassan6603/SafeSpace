@@ -48,7 +48,8 @@ class MyApp extends StatelessWidget {
           } else if (settings.name == '/login') {
             return MaterialPageRoute(builder: (context) => const LoginPage());
           } else if (settings.name == '/home') {
-            return MaterialPageRoute(builder: (context) => const HomeScreen());
+            final String user = settings.arguments as String;
+            return MaterialPageRoute(builder: (context) => HomeScreen(user: user,));
           } else if (settings.name == '/usercheck') {
             return MaterialPageRoute(builder: (context) => const UserCheck());
           } else if (settings.name == '/parentScreen') {
