@@ -1,6 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:safe_space/providers/countdown_provider.dart';
+import 'package:safe_space/view_models/auth/auth_provider.dart';
+import 'package:safe_space/view_models/countdown/countdown_provider.dart';
 import 'package:safe_space/views/add_profile_screens/same_wifi/device_connected.dart';
 import 'package:safe_space/views/add_profile_screens/same_wifi/same_wifi_screen.dart';
 import 'package:safe_space/views/add_profile_screens/setup_code/setup_code.dart';
@@ -14,13 +16,16 @@ import 'package:safe_space/views/parent/add_profile/parent_screen.dart';
 import 'package:safe_space/views/splash/splash.dart';
 
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CountdownProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }

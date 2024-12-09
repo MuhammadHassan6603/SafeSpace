@@ -1,9 +1,8 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:safe_space/providers/countdown_provider.dart';
+import 'package:safe_space/view_models/countdown/countdown_provider.dart';
 import 'package:safe_space/utilities/helper.dart';
 
 class SetupCodeScreen extends StatefulWidget {
@@ -15,6 +14,7 @@ class SetupCodeScreen extends StatefulWidget {
 
 class _SetupCodeScreenState extends State<SetupCodeScreen> {
   bool isLoading = false;
+  bool isRegenerating = false;
   bool isCodeVisible = false;
   String? setupCode;
 
@@ -106,44 +106,71 @@ class _SetupCodeScreenState extends State<SetupCodeScreen> {
                                     final seconds =
                                         countdownProvider.timeLeft % 60;
                                     return Text(
-                                      'Time Left: ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
+                                      'Code will expire in: ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
                                       style: const TextStyle(fontSize: 18),
                                     );
                                   }),
-                                  const SizedBox(height: 10,),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
                                   Consumer<CountdownProvider>(
                                     builder:
                                         (context, countdownProvider, child) {
                                       if (countdownProvider.isTimerFinished) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              setupCode = generateSetupCode();
-                                              Provider.of<CountdownProvider>(
-                                                      context,
-                                                      listen: false)
-                                                  .startCountdown();
-                                            });
-                                          },
-                                          child: Container(
-                                            width: getWidth(context) * 0.9,
-                                            height: 50,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: const Color(0xff2eaadf)
-                                            ),
-                                            alignment: Alignment.center,
-                                            child: const Text(
-                                              'Regenerate Code',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                        );
+                                        return isRegenerating
+                                            ? Container(
+                                                width: getWidth(context) * 0.9,
+                                                height: 50,
+                                                alignment: Alignment.center,
+                                                child:
+                                                    const CircularProgressIndicator(
+                                                  color: Color(0xff2eaadf),
+                                                ),
+                                              )
+                                            : GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    isRegenerating =
+                                                        true;
+                                                  });
+                                                  Future.delayed(
+                                                      const Duration(
+                                                          seconds: 1), () {
+                                                    setState(() {
+                                                      setupCode =
+                                                          generateSetupCode();
+                                                      isRegenerating =
+                                                          false;
+                                                    });
+                                                    Provider.of<CountdownProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .startCountdown();
+                                                  });
+                                                },
+                                                child: Container(
+                                                  width:
+                                                      getWidth(context) * 0.9,
+                                                  height: 50,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    color:
+                                                        const Color(0xff2eaadf),
+                                                  ),
+                                                  alignment: Alignment.center,
+                                                  child: const Text(
+                                                    'Regenerate Code',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              );
                                       } else {
-                                        return const SizedBox
-                                            .shrink();
+                                        return const SizedBox.shrink();
                                       }
                                     },
                                   ),

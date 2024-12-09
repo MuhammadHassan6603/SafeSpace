@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:safe_space/utilities/helper.dart';
+import 'package:safe_space/view_models/auth/auth_provider.dart';
 import 'package:safe_space/widgets/google_button.dart';
 
 class LoginPage extends StatefulWidget {
@@ -17,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
         backgroundColor: Colors.white,
         // resizeToAvoidBottomInset: false,
@@ -91,12 +94,27 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                               ),
-                              onPressed: () {
-                                Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  '/usercheck',
-                                  (route) => false,
+                              onPressed: () async {
+                                String result = await authProvider.login(
+                                  _email.text,
+                                  _password.text,
                                 );
+
+                                if (result == "Success") {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text("Login successful")),
+                                  );
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    '/usercheck',
+                                    (route) => false,
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(result)),
+                                  );
+                                }
                               },
                               child: Text(
                                 'Login',

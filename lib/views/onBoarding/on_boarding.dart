@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:safe_space/utilities/helper.dart';
-import 'package:safe_space/views/auth/signup.dart';
 import 'package:safe_space/views/onBoarding/content_model.dart';
 
 class OnBoarding extends StatefulWidget {
@@ -110,6 +109,8 @@ class _OnBoardingState extends State<OnBoarding> {
                   );
                 } else {
                   Navigator.pushReplacementNamed(context, '/signup');
+                  
+                  // Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
                 }
               },
               child: Text(

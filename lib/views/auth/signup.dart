@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:safe_space/utilities/helper.dart';
+import 'package:safe_space/view_models/auth/auth_provider.dart';
 import 'package:safe_space/widgets/google_button.dart';
 
 class SignupPage extends StatefulWidget {
@@ -12,12 +14,13 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   bool isChecked = false;
+  final TextEditingController _username = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-  final TextEditingController _confirmPassword = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
         backgroundColor: Colors.white,
         // resizeToAvoidBottomInset: false,
@@ -51,9 +54,21 @@ class _SignupPageState extends State<SignupPage> {
                     child: Column(
                       children: <Widget>[
                         TextField(
+                          controller: _username,
+                          decoration: InputDecoration(
+                              labelText: 'USERNAME',
+                              labelStyle: GoogleFonts.roboto(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey),
+                              focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.green))),
+                        ),
+                        const SizedBox(height: 10.0),
+                        TextField(
                           controller: _email,
                           decoration: InputDecoration(
-                              labelText: 'EMAIL',
+                              labelText: 'EMAIL ',
                               labelStyle: GoogleFonts.roboto(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -63,23 +78,10 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         const SizedBox(height: 10.0),
                         TextField(
+                          obscureText: true,
                           controller: _password,
                           decoration: InputDecoration(
-                              labelText: 'PASSWORD ',
-                              labelStyle: GoogleFonts.roboto(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey),
-                              focusedBorder: const UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.green))),
-                          obscureText: true,
-                        ),
-                        const SizedBox(height: 10.0),
-                        TextField(
-                          obscureText: true,
-                          controller: _confirmPassword,
-                          decoration: InputDecoration(
-                              labelText: 'Confirm Password',
+                              labelText: 'PASSWORD',
                               labelStyle: GoogleFonts.roboto(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -145,7 +147,9 @@ class _SignupPageState extends State<SignupPage> {
                             child: ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor: WidgetStateProperty.all(
-                                    isChecked ?const Color(0xff2eaadf):Colors.grey),
+                                    isChecked
+                                        ? const Color(0xff2eaadf)
+                                        : Colors.grey),
                                 shape: WidgetStateProperty.all(
                                   RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
@@ -153,10 +157,27 @@ class _SignupPageState extends State<SignupPage> {
                                 ),
                               ),
                               onPressed: isChecked
-                                  ? () {
+                                  ? () async {
+                                      String result = await authProvider.signUp(
+                                        _username.text,
+                                        _email.text,
+                                        _password.text,
+                                      );
 
-                                    
-                                  }
+                                      if (result == "Success") {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content:
+                                                  Text("Signup successful")),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(content: Text(result)),
+                                        );
+                                      }
+                                    }
                                   : null,
                               child: Text(
                                 'Create Account',
